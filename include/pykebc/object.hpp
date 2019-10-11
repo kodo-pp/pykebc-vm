@@ -1,5 +1,8 @@
 #pragma once
 
+#include <pykebc/reference_holder.hpp>
+
+#include <memory>
 #include <string>
 #include <unordered_map>
 

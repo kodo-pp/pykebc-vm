@@ -10,11 +10,8 @@ namespace pykebc::parser
 class Error : public std::runtime_error
 {
 public:
-    LoaderError(const std::string& message):
-        std::runtime_error(message)
-    { }
+    LoaderError(const std::string& message);
 };
-
 
 
 } // namespace pykebc::parser
