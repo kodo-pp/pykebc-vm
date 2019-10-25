@@ -14,7 +14,7 @@ enum class BuiltinType
     //py_dict,
     //py_float,
     //py_function,
-    //py_int,
+    py_int,
     //py_list,
     //py_module,
     py_none_type,

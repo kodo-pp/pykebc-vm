@@ -7,6 +7,9 @@
 #include <vector>
 
 
+namespace pykebc::types
+{
+
 struct ArgumentListDescription
 {
     ArgumentListDescription& with_args(std::vector<std::string> args);
@@ -66,3 +69,5 @@ public:
 private:
     FunctionType native_code;
 };
+
+}
