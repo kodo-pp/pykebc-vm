@@ -36,7 +36,7 @@ struct ArgumentList
 class Callable : public Object
 {
 public:
-    Callable(ArgumentListDescription args_description);
+    explicit Callable(ArgumentListDescription args_description);
     
     virtual Object* call(const ArgumentList& args) = 0;
     
@@ -48,7 +48,7 @@ protected:
 class PythonFunction : public Callable
 {
 public:
-    PythonFunction(Code code, ArgumentListDescription args_description);
+    explicit PythonFunction(Code code, ArgumentListDescription args_description);
     
     Object* call(const ArgumentList& args);
     
@@ -62,7 +62,7 @@ class NativeFunction : public Callable
 public:
     using FunctionType = std::function<Object*(const ArgumentList&)>;
 
-    PythonFunction(FunctionType native_code, ArgumentListDescription args_description);
+    explicit PythonFunction(FunctionType native_code, ArgumentListDescription args_description);
     
     Object* call(const ArgumentList& args);
     

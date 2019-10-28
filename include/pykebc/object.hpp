@@ -15,7 +15,7 @@ class Object
 public:
     using AttributeMap = std::unordered_map<std::string, Object*>;
 
-    explicit Object() = default;
+    explicit Object(Object* type) = default;
     Object(const Object& other) = delete;
     Object(Object&& other) = default;
     virtual ~Object() = default;
