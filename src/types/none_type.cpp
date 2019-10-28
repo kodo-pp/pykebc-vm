@@ -1,5 +1,6 @@
 #include <pykebc/types/none_type.hpp>
 
+#include <pykebc/builtin_objects.hpp>
 #include <pykebc/object.hpp>
 #include <pykebc/object_manager.hpp>
 #include <pykebc/types/callables.hpp>
@@ -10,7 +11,7 @@ namespace pykebc::types
 
 using namespace builtin_objects;
 
-Object* NoneType::get_bto_none_type()
+Object* NoneType::get_type_object()
 {
     // TODO: implement locking for synchronization
     static bool constructed = false;
