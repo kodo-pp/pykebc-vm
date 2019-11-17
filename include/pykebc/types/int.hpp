@@ -39,7 +39,6 @@ public:
     Object* negate()                            const;  // __neg__
     Object* not_equal(Object* rhs)              const;  // __ne__
     Object* power(Object* rhs)                  const;  // __pow__
-    Object* power(Object* rhs)                  const;  // __pow__
     Object* repr()                              const;  // __repr__
     Object* round()                             const;  // __round__
     Object* str()                               const;  // __str__
@@ -48,7 +47,7 @@ public:
     Object* to_float()                          const;  // __float__
     Object* to_int()                            const;  // __int__
     Object* true_div(Object* rhs)               const;  // __truediv__
-    Object* trunc(Object* rhs)                  const;  // __trunc__
+    Object* trunc()                             const;  // __trunc__
 
 private:
     long value;

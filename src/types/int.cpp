@@ -121,7 +121,7 @@ Object* Int::floor_div(Object* rhs) const
 
 Object* Int::format([[maybe_unused]] Object* format_string) const
 {
-    raise_not_implemented_error("int.format() is not implemented");
+    raise_not_implemented_error("int.__format__() is not implemented");
 }
 
 
@@ -133,7 +133,7 @@ Object* Int::greater_or_equal(Object* rhs) const
         return make_bool(get_value() >= int_rhs.get_value());
     } else {
         // TODO: implement for float rhs
-        raise_type_error("only int >= int is implemented")
+        raise_type_error("only int >= int is implemented");
     }
 }
 
@@ -142,11 +142,10 @@ Object* Int::greater_than(Object* rhs) const
 {
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
         return make_bool(get_value() > int_rhs.get_value());
     } else {
         // TODO: implement for float rhs
-        raise_type_error("only int > int is implemented")
+        raise_type_error("only int > int is implemented");
     }
 }
 
@@ -159,11 +158,178 @@ Object* Int::hash() const
 }
 
 
+Object* Int::index() const
+{
+    return this;
+}
+
+
+Object* Int::init(Object* value)
+{
+    // TODO: generalize
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        set_value(int_rhs->get_value());
+        return get_none_object();
+    }
+    
+    raise_type_error("only int(int) is implemented");
+}
+
+
+Object* Int::less_or_equal(Object* rhs)
+{
+    // TODO: generalize
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        return make_bool(get_value() <= int_rhs.get_value());
+    }
+    raise_type_error("only int <= int is implemented");
+}
+
+
+Object* Int::less_than(Object* rhs)
+{
+    // TODO: generalize
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        return make_bool(get_value() < int_rhs.get_value());
+    }
+    raise_type_error("only int < int is implemented");
+}
+
+
+Object* Int::lshift(Object* rhs)
+{
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        auto om = get_object_manager();
+        return om.create_int(get_value() << int_rhs.get_value());
+    }
+    raise_type_error("invalid '<<' operation: only int << int is defined");
+}
+
+
+Object* Int::mod(Object* rhs)
+{
+    // TODO: float rhs
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        auto om = get_object_manager();
+        return om.create_int(get_value() % int_rhs.get_value());
+    }
+    raise_type_error("only int % int is implemented");
+}
+
+
+Object* Int::mult(Object* rhs)
+{
+    // TODO: float rhs
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        auto om = get_object_manager();
+        return om.create_int(get_value() * int_rhs.get_value());
+    }
+    raise_type_error("only int * int is implemented");
+}
+
+
+Object* Int::negate()
+{
+    auto om = get_object_manager();
+    return om.create_int(-get_value());
+}
+
+
+Object* Int::not_equal(Object* rhs)
+{
+    // TODO: generalize
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        return make_bool(get_value() != int_rhs.get_value());
+    }
+    raise_type_error("only int != int is implemented");
+}
+
+
+Object* Int::power([[maybe_unused]] Object* rhs)
+{
+    // TODO: implement
+    raise_not_implemented_error("int.__pow__() is not implemented");
+}
+
+
+Object* Int::repr()
+{
+    // TODO: implement
+    raise_not_implemented_error("int.__repr__() is not implemented");
+}
+
+
+Object* Int::round()
+{
+    return this;
+}
+
+
+Object* Int::str()
+{
+    // TODO: implement
+    raise_not_implemented_error("int.__str__() is not implemented");
+}
+
+
+Object* Int::sub(Object* rhs)
+{
+    // TODO: float rhs
+    if (rhs->is_instance(Int::get_type_object())) {
+        auto int_rhs = checked_cast<Int>(rhs);
+        auto om = get_object_manager();
+        return om.create_int(get_value() - int_rhs.get_value());
+    }
+    raise_type_error("only int - int is implemented");
+}
+
+
+Object* Int::to_bool()
+{
+    return make_bool(get_value() != 0);
+}
+
+
+Object* Int::to_float()
+{
+    // TODO: implement
+    raise_not_implemented_error("int.__float__() is not implemented");
+}
+
+
+Object* Int::to_int()
+{
+    return this;
+}
+
+
+Object* Int::true_div(Object* rhs)
+{
+    // TODO: implement
+    raise_not_implemented_error("int.__truediv__() is not implemented");
+}
+
+
+Object* Int::trunc()
+{
+    return this;
+}
+
+
 #define DECLARE_METHOD_1(py_method_name, cpp_method_name) \
     obj.set_attribute( \
         #py_method_name, \
         om.create_native_function( \
-            [](const ArgumentList& args) { return cpp_method_name(args.args.at(0), args.args.at(1)); }, \
+            [](const ArgumentList& args) { \
+                return checked_cast<Int>(args.args.at(0))->cpp_method_name(args.args.at(1)); \
+            }, \
             ArgumentListDescription().with_pos_only_arg("self").with_pos_only_arg("rhs") \
         ) \
     )
@@ -173,7 +339,9 @@ Object* Int::hash() const
     obj.set_attribute( \
         #py_method_name, \
         om.create_native_function( \
-            [](const ArgumentList& args) { return cpp_method_name(args.args.at(0)); }, \
+            [](const ArgumentList& args) { \
+                return checked_cast<Int>(args.args.at(0))->cpp_method_name(); \
+            }, \
             ArgumentListDescription().with_pos_only_arg("self") \
         ) \
     )
@@ -204,10 +372,8 @@ Object* Int::get_type_object()
     DECLARE_METHOD_1(__mul__,       mult);
     DECLARE_METHOD_1(__ne__,        not_equal);
     DECLARE_METHOD_1(__pow__,       power);
-    DECLARE_METHOD_1(__pow__,       power);
     DECLARE_METHOD_1(__sub__,       sub);
     DECLARE_METHOD_1(__truediv__,   true_div);
-    DECLARE_METHOD_1(__trunc__,     trunc);
 
     DECLARE_METHOD_0(__invert__,    bit_invert);
     DECLARE_METHOD_0(__ceil__,      ceil);
@@ -221,6 +387,7 @@ Object* Int::get_type_object()
     DECLARE_METHOD_0(__bool__,      to_bool);
     DECLARE_METHOD_0(__float__,     to_float);
     DECLARE_METHOD_0(__int__,       to_int);
+    DECLARE_METHOD_0(__trunc__,     trunc);
 
     return obj;
 }
