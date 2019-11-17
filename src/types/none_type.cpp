@@ -31,7 +31,7 @@ Object* NoneType::get_type_object()
                 // `self` is passed to it as an argument, so we can return `self`.
                 return args.args.at(0); // args.args[0] == self == None
             },
-            ArgumentListDescription().with_pos_only_args({"self"})
+            ArgumentListDescription().with_pos_only_arg("self")
         )
     );
 
@@ -41,7 +41,7 @@ Object* NoneType::get_type_object()
             [obj]([[maybe_unused]] const ArgumentList& args) {
                 return get_false_object();
             },
-            ArgumentListDescription().with_pos_only_args({"self"})
+            ArgumentListDescription().with_pos_only_arg("self")
         )
     );
 
@@ -49,7 +49,7 @@ Object* NoneType::get_type_object()
         [obj](const ArgumentList& args) {
             return om.create_str("None");
         },
-        ArgumentListDescription().with_pos_only_args({"self"})
+        ArgumentListDescription().with_pos_only_arg("self")
     );
 
     obj.set_attribute(
