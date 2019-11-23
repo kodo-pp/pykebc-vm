@@ -15,7 +15,7 @@ Object* NoneType::get_type_object()
 {
     // TODO: implement locking for synchronization
     static bool constructed = false;
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     static Object* obj = om.create_object(get_bto_type());
     if (constructed) {
         return obj;

@@ -18,7 +18,7 @@ namespace
     {
         // TODO: implement locking for synchronization
         static bool constructed = false;
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         static Object* obj = om.create_object(get_bto_type());
         if (constructed) {
             return obj;
@@ -37,7 +37,7 @@ namespace
                         auto int_value = util::checked_cast<Int*>(value);
                         int_self->set_value(int_value->get_value());
                     } else {
-                        auto om = get_object_manager();
+                        auto& om = get_object_manager();
                         auto type_error = om.create_type_error(
                             om.create_str(
                                 "int() expected a string, bytes, float or int"

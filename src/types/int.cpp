@@ -28,7 +28,7 @@ void Int::set_value(long value) noexcept
 
 Object* Int::add(Object* rhs) const
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     if (rhs->is_instance(Int::get_type_object())) {
         // int + int
         auto int_rhs = checked_cast<Int>(rhs);
@@ -46,7 +46,7 @@ Object* Int::add(Object* rhs) const
 
 Object* Int::bit_and(Object* rhs) const
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     if (rhs->is_instance(Int::get_type_object())) {
         // int & int
         auto int_rhs = checked_cast<Int>(rhs);
@@ -60,7 +60,7 @@ Object* Int::bit_and(Object* rhs) const
 
 Object* Int::bit_invert() const
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     auto int_rhs = checked_cast<Int>(rhs);
     return om.create_int(~get_value());
 }
@@ -68,7 +68,7 @@ Object* Int::bit_invert() const
 
 Object* Int::bit_or(Object* rhs) const
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     if (rhs->is_instance(Int::get_type_object())) {
         // int | int
         auto int_rhs = checked_cast<Int>(rhs);
@@ -82,7 +82,7 @@ Object* Int::bit_or(Object* rhs) const
 
 Object* Int::bit_xor(Object* rhs) const
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     if (rhs->is_instance(Int::get_type_object())) {
         // int ^ int
         auto int_rhs = checked_cast<Int>(rhs);
@@ -110,7 +110,7 @@ Object* Int::floor_div(Object* rhs) const
 {
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return om.create_int(get_value() / int_rhs.get_value());
     } else {
         // TODO: implement for float rhs
@@ -129,7 +129,7 @@ Object* Int::greater_or_equal(Object* rhs) const
 {
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return make_bool(get_value() >= int_rhs.get_value());
     } else {
         // TODO: implement for float rhs
@@ -203,7 +203,7 @@ Object* Int::lshift(Object* rhs)
 {
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return om.create_int(get_value() << int_rhs.get_value());
     }
     raise_type_error("invalid '<<' operation: only int << int is defined");
@@ -215,7 +215,7 @@ Object* Int::mod(Object* rhs)
     // TODO: float rhs
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return om.create_int(get_value() % int_rhs.get_value());
     }
     raise_type_error("only int % int is implemented");
@@ -227,7 +227,7 @@ Object* Int::mult(Object* rhs)
     // TODO: float rhs
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return om.create_int(get_value() * int_rhs.get_value());
     }
     raise_type_error("only int * int is implemented");
@@ -236,7 +236,7 @@ Object* Int::mult(Object* rhs)
 
 Object* Int::negate()
 {
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     return om.create_int(-get_value());
 }
 
@@ -284,7 +284,7 @@ Object* Int::sub(Object* rhs)
     // TODO: float rhs
     if (rhs->is_instance(Int::get_type_object())) {
         auto int_rhs = checked_cast<Int>(rhs);
-        auto om = get_object_manager();
+        auto& om = get_object_manager();
         return om.create_int(get_value() - int_rhs.get_value());
     }
     raise_type_error("only int - int is implemented");
@@ -351,7 +351,7 @@ Object* Int::get_type_object()
 {
     // TODO: implement locking for synchronization
     static bool constructed = false;
-    auto om = get_object_manager();
+    auto& om = get_object_manager();
     static Object* obj = om.create_object(get_bto_type());
     if (constructed) {
         return obj;
