@@ -1,5 +1,7 @@
-#include <pyekbc/util/fits.hpp>
+#include <pykebc/object_manager.hpp>
 #include <pykebc/parser.hpp>
+#include <pykebc/util/fits.hpp>
+#include <pykebc/util/unicode_string.hpp>
 
 #include <string_view>
 
@@ -60,6 +62,24 @@ Object* Parser::read_object()
             throw Error(std::string("Unknown object type character: '") + type_byte + "'");
     }
 }
+
+
+Object* Parser::read_utf8_str()
+{
+    size_t num_utf8_bytes = read_length<uint64_t>(data_reader);
+
+    // TODO: actual UTF-8 support
+    UnicodeString str;
+    str.reserve(num_utf8_bytes);
+    for (size_t i = 0; i < num_utf8_bytes; ++i) {
+        uint8_t byte = data_reader.read_uint<uint8_t>();
+        auto code_point = static_cast<char32_t>(static_cast<char>(byte));
+        str.push_back(code_point);
+    }
+
+    return om.create_str(std::move(str));
+}
+
 
 Object* Parser::read_int()
 {
